@@ -75,7 +75,7 @@ class itemLeilaoController{
         
         $item->setSituacao(true); //nasce como registro válido no bd
        
-        if($this->itemLeilaoPDO->insert($produto)){
+        if($this->itemLeilaoPDO->insert($item)){
             echo "\Item salvo.";
         }else{
             echo "\nErro ao salvar. Contate o administrador do sistema.";
@@ -84,37 +84,50 @@ class itemLeilaoController{
     
     //update (case 2)
     private function alterarItem(){
-        echo "\nDigite o código do produto que você deseja alterar: ";
-        $produto = $this->produtoPDO->findById(rtrim(fgets(STDIN)));
-        if($produto != null){
-            print_r($produto);
-            echo "\nDigite o nome do produto: ";
-            $nome = fgets(STDIN);
+        echo "\nDigite o código do item que você deseja alterar: ";
+        $item = $this->itemLeilaoPDO->findById(rtrim(fgets(STDIN)));
+        if($item != null){
+            print_r($item);
+            echo "\nDigite o nome do item: ";
+            $titulo = fgets(STDIN);
             if($nome != "\n"){
-                $produto->setNome(rtrim($nome));
+                $item->setTitulo_item(rtrim($nome));
             }
-            echo"\nDescrição do Produto: ";
+            
+            echo"\nDescrição do item: ";
             $descricao = fgets(STDIN);
             if($descricao != "\n"){
-                $produto->setDescricao(rtrim($descricao));
+                $item->setDescricao(rtrim($descricao));
             }
-            echo"\nValor do Produto (sistema americano): ";
-            $valor = fgets(STDIN);
-            if($valor != "\n"){
-                $produto->setValor(rtrim($valor));
+           
+            echo"\nLance minimo: ";
+            $minimo = fgets(STDIN);
+            if($minimo != "\n"){
+                $item->setLance_minimo(rtrim($quantidade));
             }
-            echo"\nQuantidade em estoque: ";
-            $quantidade = fgets(STDIN);
-            if($quantidade != "\n"){
-                $produto->setQuantidade(rtrim($quantidade));
+             echo"\nFoto: ";
+            $foto = fgets(STDIN);
+            if($foto != "\n"){
+                $item->setCaminho_foto(rtrim($quantidade));
             }
-            if($this->produtoPDO->update($produto)){
-                echo "\nProduto alterado.";
+            
+             echo"\nArrematado?: ";
+            $arremate = fgets(STDIN);
+            if($arremate != "\n"){
+                $item->setArrematado(rtrim($arremate));
+            }
+            
+            $ativo = fgets(STDIN);
+            $item->setSituacao(rtrim($ativo));
+           
+            
+            if($this->itemLeilaoPDO->update($produto)){
+                echo "\nItem alterado.";
             }else{
-                echo "\nErro ao alterar o produto. Contate o administrador do sistema.";
+                echo "\nErro ao alterar o item. Contate o administrador do sistema.";
             }
         }else{
-            echo "\nNão há produtos cadastrados com esse código.";
+            echo "\nNão há itens cadastrados com esse código.";
         }
     }
     

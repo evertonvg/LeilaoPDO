@@ -17,16 +17,17 @@ class itemLeilaoPDO extends Conexao {
         $this->conn = parent::getConexao();
     }
     
-    public function insert($produto){
+    public function insert($item){
         try{
-            $stmt = $this->conn->prepare("INSERT INTO produtos "
-                . "(nome, descricao, valor, situacao, quantidade) "
-                . "VALUES (?, ?, ?, ?, ?)");
-            $stmt->bindValue(1, $produto->getNome());
-            $stmt->bindValue(2, $produto->getDescricao());
-            $stmt->bindValue(3, $produto->getValor());
-            $stmt->bindValue(4, $produto->getSituacao());
-            $stmt->bindValue(5, $produto->getQuantidade());
+            $stmt = $this->conn->prepare("INSERT INTO itens "
+                . "(titulo, descricao, minimo, camninho_foto, arrematado, situacao) "
+                . "VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bindValue(1, $item->getTitulo_item());
+            $stmt->bindValue(2, $item->getDescricao());
+            $stmt->bindValue(3, $item->getLance_minimo());
+            $stmt->bindValue(4, $item->getCaminho_foto());
+            $stmt->bindValue(5, $item->getArrematado());
+            $stmt->bindValue(6, $item->getSituacao());
             return $stmt->execute();
             
         } catch (PDOException $ex) {
@@ -35,20 +36,22 @@ class itemLeilaoPDO extends Conexao {
         }
     }
     
-    public function update($produto){
+    public function update($item){
         try{
-            $stmt = $this->conn->prepare("UPDATE produtos SET nome=?, descricao=?, "
-                    . "valor=?, situacao=?, quantidade=? WHERE id = ?");
-            $stmt->bindValue(1, $produto->getNome());
-            $stmt->bindValue(2, $produto->getDescricao());
-            $stmt->bindValue(3, $produto->getValor());
-            $stmt->bindValue(4, $produto->getSituacao());
-            $stmt->bindValue(5, $produto->getQuantidade());
-            $stmt->bindValue(6, $produto->getId());
+            $stmt = $this->conn->prepare("UPDATE itens SET titulo=?, descricao=?, "
+                    . "minimo=?, camninho_foto=?, arrematado=?, situacao=? WHERE id = ?");
+            $stmt->bindValue(1, $Item->getTitulo_item());
+            $stmt->bindValue(2, $Item->getDescricao());
+            $stmt->bindValue(3, $Item->getLance_minimo());
+            $stmt->bindValue(4, $Item->getCaminho_foto());
+            $stmt->bindValue(5, $Item->getArrematado());
+            $stmt->bindValue(6, $Item->getSituacao());
+            $stmt->bindValue(7, $Item->getId());
+             
             return $stmt->execute();
             
         } catch (PDOException $ex) {
-            echo "\nExceção em ProdutoPDO->update: " . $ex->getMessage();
+            echo "\nExceção em itemLeilaoPDO->update: " . $ex->getMessage();
             return false;
         }
     }
