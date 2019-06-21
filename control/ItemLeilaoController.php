@@ -90,8 +90,8 @@ class itemLeilaoController{
             print_r($item);
             echo "\nDigite o nome do item: ";
             $titulo = fgets(STDIN);
-            if($nome != "\n"){
-                $item->setTitulo_item(rtrim($nome));
+            if($titulo != "\n"){
+                $item->setTitulo_item(rtrim($titulo));
             }
             
             echo"\nDescrição do item: ";
@@ -103,12 +103,12 @@ class itemLeilaoController{
             echo"\nLance minimo: ";
             $minimo = fgets(STDIN);
             if($minimo != "\n"){
-                $item->setLance_minimo(rtrim($quantidade));
+                $item->setLance_minimo(rtrim($minimo));
             }
              echo"\nFoto: ";
             $foto = fgets(STDIN);
             if($foto != "\n"){
-                $item->setCaminho_foto(rtrim($quantidade));
+                $item->setCaminho_foto(rtrim($foto));
             }
             
              echo"\nArrematado?: ";
@@ -117,11 +117,10 @@ class itemLeilaoController{
                 $item->setArrematado(rtrim($arremate));
             }
             
-            $ativo = fgets(STDIN);
-            $item->setSituacao(rtrim($ativo));
+            $item->setSituacao(true);
            
             
-            if($this->itemLeilaoPDO->update($produto)){
+            if($this->itemLeilaoPDO->update($item)){
                 echo "\nItem alterado.";
             }else{
                 echo "\nErro ao alterar o item. Contate o administrador do sistema.";
@@ -133,14 +132,14 @@ class itemLeilaoController{
     
     //update (case 3)
     private function excluirItem(){
-        echo "\nDigite o código do produto que você deseja tornar inativo: ";
-        $produto = $this->produtoPDO->findById(rtrim(fgets(STDIN)));
+        echo "\nDigite o código do item que você deseja tornar inativo: ";
+        $item = $this->itemLeilaoPDO->findById(rtrim(fgets(STDIN)));
         print_r($produto);
         echo "\nConfirmar a operação (s/n)? ";
         $operacao = rtrim(fgets(STDIN));
         
         if(!strcasecmp($operacao, "s")){
-            if($this->produtoPDO->deleteSoft($produto->getId())){
+            if($this->itemLeilaoPDO->deleteSoft($item->getId())){
                 echo "\nProduto excluído.";
             }else{
                 echo "\nFalha ao reativar o produto. Contate o administrador do sistema.";
@@ -153,33 +152,33 @@ class itemLeilaoController{
 
     //findAll ou SELECT sem filtros (case 4)
     private function listarTodosItens(){
-        print_r($this->produtoPDO->findAll());
+        print_r($this->itemLeilaoPDO->findAll());
     }
     
     //find for name ou SELECT com filtros (case 5)
     private function listarItensPeloNome(){
         echo "\nDigite o nome para pesquisa: ";
         $nome = rtrim(fgets(STDIN));   
-        print_r($this->produtoPDO->findByNome($nome));
+        print_r($this->itemLeilaoPDO->findByNome($nome));
     }
     
     //find for id ou SELECT com filtros (case 6)
     private function listarItensPeloCodigo(){
         echo "\nDigite o código para pesquisa: ";
         $codigo = rtrim(fgets(STDIN));
-        print_r($this->produtoPDO->findById($codigo));
+        print_r($this->itemLeilaoPDO->findById($codigo));
     }
     
     //update (case 7)
     private function reativarItemPeloCodigo(){
         echo "\nDigite o código do produto que você deseja reativar: ";
-        $produto = $this->produtoPDO->findById(rtrim(fgets(STDIN)));
+        $produto = $this->itemLeilaoPDO->findById(rtrim(fgets(STDIN)));
         print_r($produto);
         echo "\nConfirmar a operação (s/n)? ";
         $operacao = rtrim(fgets(STDIN));
         
         if(!strcasecmp($operacao, "s")){
-            if($this->produtoPDO->reativarProdutoPeloId($produto->getId())){
+            if($this->itemLeilaoPDO->reativarProdutoPeloId($produto->getId())){
                 echo "\nProduto reativado.";
             }else{
                 echo "\nFalha ao reativar o produto. Contate o administrador do sistema.";
@@ -192,22 +191,7 @@ class itemLeilaoController{
     
     //update (case 8)
      private function listarTodosItensAtivos(){
-        echo "\nDigite o código do produto que você deseja reativar: ";
-        $produto = $this->produtoPDO->findById(rtrim(fgets(STDIN)));
-        print_r($produto);
-        echo "\nConfirmar a operação (s/n)? ";
-        $operacao = rtrim(fgets(STDIN));
-        
-        if(!strcasecmp($operacao, "s")){
-            if($this->produtoPDO->reativarProdutoPeloId($produto->getId())){
-                echo "\nProduto reativado.";
-            }else{
-                echo "\nFalha ao reativar o produto. Contate o administrador do sistema.";
-            }       
-        }
-        if(!strcasecmp($operacao, "n")){
-            echo "\nOperação cancelada.";
-        }   
+         print_r($this->itemLeilaoPDO->findAllWithoutDeleted());
     }    
     
 }

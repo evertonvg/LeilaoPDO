@@ -19,7 +19,7 @@ class MainController {
         //cria todos os controllers
         $this->participanteController = new participanteController();
         //$this->lanceController = new lanceController();
-        //$this->itemController = new itemController();
+        $this->itemLeilaoController = new itemLeilaoController();
         //$this->leilaoController = new leilaoController();
     }
     
@@ -46,7 +46,7 @@ class MainController {
                         $this->lanceController->exibeMenu();
                     break;
                 case 3:
-                    echo "\nEm desenvolvimento.";
+                        $this->itemLeilaoController->exibeMenu();
                     break;
                 case 4:
                     echo "\nEm desenvolvimento.";

@@ -31,7 +31,7 @@ class itemLeilaoPDO extends Conexao {
             return $stmt->execute();
             
         } catch (PDOException $ex) {
-            echo "\nExceção em ProdutoPDO->insert: " . $ex->getMessage();
+            echo "\nExceção em itemLeilaoPDO->insert: " . $ex->getMessage();
             return false;
         }
     }
@@ -58,92 +58,91 @@ class itemLeilaoPDO extends Conexao {
 
     public function deleteSoft($id){
         try{
-            $stmt = $this->conn->prepare("UPDATE produtos SET situacao=? WHERE id=?");
+            $stmt = $this->conn->prepare("UPDATE itens SET situacao=? WHERE id=?");
             $stmt->bindValue(1, false);
             $stmt->bindValue(2, $id);
          
             return $stmt->execute();
             
         } catch (PDOException $ex) {
-            echo "\nExceção em ProdutoPDO->deleteSoft: " . $ex->getMessage();
+            echo "\nExceção em itemLeilaoPDO->deleteSoft: " . $ex->getMessage();
             return false;
         }
     }
     
     public function reativarProdutoPeloId($id){
         try{
-            $stmt = $this->conn->prepare("UPDATE produtos SET situacao=? WHERE id=?");
+            $stmt = $this->conn->prepare("UPDATE itens SET situacao=? WHERE id=?");
             $stmt->bindValue(1, true);
             $stmt->bindValue(2, $id);
          
             return $stmt->execute();
             
         } catch (PDOException $ex) {
-            echo "\nExceção em ProdutoPDO->deleteSoft: " . $ex->getMessage();
+            echo "\nExceção em itemLeilaoPDO->reativarProdutoPeloId: " . $ex->getMessage();
             return false;
         }
     }
     
     public function findAll(){
         try{
-            $stmt = $this->conn->prepare("SELECT * FROM vendas.produtos ORDER BY nome");
+            $stmt = $this->conn->prepare("SELECT * FROM itens ORDER BY titulo");
             if($stmt->execute()){
-                $produtos = Array();
+                $itens = Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($produtos, $this->resultSetToProduto($rs));
+                    array_push($itens, $this->resultSetToitem($rs));
+                }
+                return $itens;
             }
-            
-            return $produtos;
-        }
         } catch (PDOException $ex) {
-            echo "\nExceção no findAll da classe ProdutoPDO: " . $ex->getMessage();
+            echo "\nExceção no findAll da classe ItemLeilaoPDO: " . $ex->getMessage();
             return null;    
         }     
     }
     
     public function findAllWithoutDeleted(){
         try{
-            $stmt = $this->conn->prepare("SELECT * FROM vendas.produtos WHERE situacao = ? ORDER BY nome");
+            $stmt = $this->conn->prepare("SELECT * FROM itens WHERE situacao = ? ORDER BY titulo");
             $stmt->bindValue(1, true);
             if($stmt->execute()){
-                $produtos = Array();
+                $itens = Array();
                 while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($produtos, $this->resultSetToProduto($rs));
+                    array_push($itens, $this->resultSetToitem($rs));
             }
             
-            return $produtos;
+            return $itens;
         }
         } catch (PDOException $ex) {
-            echo "\nExceção no findAll da classe ProdutoPDO: " . $ex->getMessage();
+            echo "\nExceção no findAll da classe itemLeilaoPDO: " . $ex->getMessage();
             return null;    
         }
     }
 
     public function findByNome($nome){
         try{
-            $stmt = $this->conn->prepare("SELECT * FROM produtos WHERE nome LIKE ? ORDER BY nome");
+            $stmt = $this->conn->prepare("SELECT * FROM itens WHERE titulo LIKE ? ORDER BY titulo");
             $stmt->bindValue(1, $nome . '%');
             if ($stmt->execute()) {
-                $produtos = Array();
+                $itens = Array();
                 while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
-                    array_push($produtos, $this->resultSetToProduto($rs));
+                    array_push($itens, $this->resultSetToProduto($rs));
                 }
-                return $produtos;
+                return $itens;
             }
             
         } catch (PDOException $ex) {
-            echo "\nExceção no findByNome da classe ProdutoPDO: " . $ex->getMessage();
+            echo "\nExceção no findByNome da classe itemLeilaoPDO: " . $ex->getMessage();
             return null;    
         }
     }
     
     public function findById($id) {
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM produtos WHERE id=?");
+            $stmt = $this->conn->prepare("SELECT * FROM itens WHERE id=?");
             $stmt->bindValue(1, $id, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 if($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    return $this->resultSetToProduto($rs);
+                    return $this->resultSetToitem($rs);
                 }else{
                     return null;
                 }
@@ -151,7 +150,7 @@ class itemLeilaoPDO extends Conexao {
                 return null;
             }
         } catch (PDOException $ex) {
-            echo "\nExceção no findById da classe ProdutoPDO: " . $ex->getMessage();
+            echo "\nExceção no findById da classe itemLeilaoPDO: " . $ex->getMessage();
             return null;
         }
     }
@@ -159,13 +158,12 @@ class itemLeilaoPDO extends Conexao {
     private function resultSetToitem($rs){
         $Item = new Item_Leilao();
         $Item->setId($rs->id);
-        $Item->setTitulo_item($rs->nome);
+        $Item->setTitulo_item($rs->titulo);
         $Item->setDescricao($rs->descricao);
         $Item->setLance_minimo($rs->minimo);
-        $item->setCaminho_foto($rs->foto);
         $Item->setSituacao($rs->situacao);
         $Item->setArrematado($rs->arrematado);
-        
+        //$item->setCaminho_foto($rs->camninho_foto);
         return $Item;
     }
     

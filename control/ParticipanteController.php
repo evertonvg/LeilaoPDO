@@ -140,7 +140,7 @@ class participanteController{
             $participante->setSituacao($situacao);
              
             $admin = false;
-            $participante->setTelefone(rtrim($telefone));
+            $participante->setAdmin(rtrim(admin));
              
             if($this->participantePDO->update($participante)){
                 echo "\nParticipante alterado.";
@@ -161,7 +161,7 @@ class participanteController{
         $operacao = rtrim(fgets(STDIN));
         
         if(!strcasecmp($operacao, "s")){
-            if($this->participantePDOPDO->deleteSoft($participante->getId())){
+            if($this->participantePDO->deleteSoft($participante->getId())){
                 echo "\nparticipante excluído.";
             }else{
                 echo "\nFalha ao reativar o participante. Contate o administrador do sistema.";
@@ -181,7 +181,7 @@ class participanteController{
     private function listarParticipantePeloNome(){
         echo "\nDigite o nome para pesquisa: ";
         $nome = rtrim(fgets(STDIN));   
-        print_r($this->participantePDOPDO->findByNome($nome));
+        print_r($this->participantePDO->findByNome($nome));
     }
     
     //find for id ou SELECT com filtros (case 6)

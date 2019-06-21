@@ -41,13 +41,14 @@ class ParticipantePDO extends Conexao {
             return $participantes;
         }
         } catch (PDOException $ex) {
-            echo "\nExceção no findAll da classe ProdutoPDO: " . $ex->getMessage();
+            echo "\nExceção no findAll da classe participantePDO: " . $ex->getMessage();
         }
         
     }
+    
     public function update($participante){
         try{
-            $stmt = $this->conn->prepare("UPDATE clientes SET nome=?, login=?, situacao=? WHERE id = ?");
+            $stmt = $this->conn->prepare("UPDATE participantes SET nome=?, login=?, senha=?, email=?, endereco=?, telefone=?, admin=?, situacao=? WHERE id = ?");
             $stmt->bindValue(1,$participante->getNome());
              $stmt->bindValue(2,$participante->getLogin());
              $stmt->bindValue(3,$participante->getSenha());
@@ -65,7 +66,7 @@ class ParticipantePDO extends Conexao {
         }
     }    
     
-    public function deleteSoft(){
+    public function deleteSoft($id){
          try{
             $stmt = $this->conn->prepare("UPDATE participantes SET situacao=? WHERE id=?");
             $stmt->bindValue(1, false);
@@ -93,27 +94,9 @@ class ParticipantePDO extends Conexao {
                 return null;
             }
         } catch (PDOException $ex) {
-            echo "\nExceção no findById da classe ClientePDO: " . $ex->getMessage();
+            echo "\nExceção no findById da classe participantePDO: " . $ex->getMessage();
             return null;
         }
-    }
-    
-    public function findAll(){
-        try{
-            $stmt = $this->conn->prepare("SELECT * FROM participantes ORDER BY nome");
-            if($stmt->execute()){
-                $participantes = Array();
-                while($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    array_push($participantes, $this->resultSetToParticipante($rs));
-            }
-            
-            return $participantes;
-        }
-        } catch (PDOException $ex) {
-            echo "\nExceção no findAll da classe participantePDO: " . $ex->getMessage();
-            return null;    
-        }
-        
     }
     
     public function findByNome($nome){
@@ -125,7 +108,7 @@ class ParticipantePDO extends Conexao {
                 while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
                     array_push($participantes, $this->resultSetToParticipante($rs));
                 }
-                return $clientes;
+                return $participantes;
             }
             
         } catch (PDOException $ex) {
@@ -134,24 +117,6 @@ class ParticipantePDO extends Conexao {
         }
     }
     
-    public function findById($id) {
-        try {
-            $stmt = $this->conn->prepare("SELECT * FROM participantes WHERE id=?");
-            $stmt->bindValue(1, $id, PDO::PARAM_INT);
-            if ($stmt->execute()) {
-                if($rs = $stmt->fetch(PDO::FETCH_OBJ)){
-                    return $this->resultSetToParticipante($rs);
-                }else{
-                    return null;
-                }
-            } else {
-                return null;
-            }
-        } catch (PDOException $ex) {
-            echo "\nExceção no findById da classe participantePDO: " . $ex->getMessage();
-            return null;
-        }
-    }
     
     public function findAllWithoutDeleted(){
         try{

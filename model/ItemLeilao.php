@@ -10,7 +10,7 @@ class Item_Leilao{
     private $arrematado;
     private $situacao;
     
-    private $lances = Array(); //relação com Lance
+    //private $lances = Array(); //relação com Lance
     //private $leilao; //relação com leilão
     
     function __construct() {
@@ -74,24 +74,24 @@ class Item_Leilao{
         $this->arrematado = $arrematado;
     }
     
-    function getLances() {
-        return $this->lances;
-    }
+    //function getLances() {
+    //    return $this->lances;
+    //}
 
-    function getLeilao() {
-        return $this->leilao;
-    }
+    //function getLeilao() {
+     //   return $this->leilao;
+    //}
 
-    function setLances($lances) {
-        $this->lances = $lances;
-    }
+    //function setLances($lances) {
+    //    $this->lances = $lances;
+   // }
 
-    function setLeilao($leilao) {
-        $this->leilao = $leilao;
-    }
+    //function setLeilao($leilao) {
+    //    $this->leilao = $leilao;
+    //}
 
     public function __toString() {
-        return "\nItem[id=$this->id, Titulo=$this->titulo_item, Descricao=$this->descricao, Lance Minimo=$this->Lance_minimo, Caminho da foto=$this->caminho_foto, Arrematado=$this->arrematado";
+        return "\nItem[id=$this->id, Titulo=$this->titulo_item, Descricao=$this->descricao, Lance Minimo=$this->Lance_minimo, Caminho da foto=$this->caminho_foto, Arrematado=$this->arrematado, Situacão=$this->situacao";
     }
     
  
