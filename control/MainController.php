@@ -20,7 +20,7 @@ class MainController {
         $this->participanteController = new participanteController();
         //$this->lanceController = new lanceController();
         $this->itemLeilaoController = new itemLeilaoController();
-        //$this->leilaoController = new leilaoController();
+        $this->leilaoController = new leilaoController();
     }
     
     public function exibeMenu(){

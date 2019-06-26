@@ -14,7 +14,7 @@ class itemLeilaoController{
         //Um front em modo texto controlado por Menu
         $exit = 1;
         while ($exit != 0){
-            echo "\n\n--------- Submenu Produto ---------";
+            echo "\n\n--------- Submenu Item ---------";
             echo "\n1. Inserir item";
             echo "\n2. Alterar item";
             echo "\n3. Excluir item (soft delete)";
